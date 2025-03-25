@@ -1,0 +1,9 @@
+/node_modules
+/coverage
+/dist
+/data/*.bat  
+package-lock.json
+.fetch-client
+.env
+.env.*
+!.env.example
