@@ -21,7 +21,7 @@ export default class myController implements IController {
         this.router.get("/api/xyzMany", this.getManyAll);
         this.router.get("/api/xyzMany/:id", this.getManyById);
         this.router.get("/api/xyzMany/keyword/:keyword", this.getManyByKeyword);
-        this.router.get(`/api/xyzMany/:offset/:limit/:sortingfield/:filter?`, this.getManyPaginated);
+        this.router.get(`/api/xyzMany/:offset/:limit/:sortingfield{/:filter}`, this.getManyPaginated);
         this.router.post("/api/xyzMany", this.createMany);
         this.router.patch("/api/xyzMany/:id", this.modifyManyPATCH);
         this.router.put("/api/xyzMany/:id", this.modifyManyPUT);
