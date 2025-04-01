@@ -41,6 +41,7 @@ export default tseslint.config(
             "perfectionist/sort-class-members": "off",
             "perfectionist/sort-classes": "off",
             "perfectionist/sort-interfaces": "off",
+            "perfectionist/sort-objects": "off",
         },
     },
 );

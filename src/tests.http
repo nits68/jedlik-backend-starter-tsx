@@ -23,6 +23,9 @@ GET http://localhost:5000/api/xyzMany/1  HTTP/1.1
 ### getManyByKeyword
 GET http://localhost:5000/api/xyzMany/keyword/kerül HTTP/1.1
 
+### groupByExample
+GET http://localhost:5000/api/xyzMany-Group-By  HTTP/1.1
+
 ### getManyPaginated
 GET http://localhost:5000/api/xyzMany/0/2/-prepTime/kerül HTTP/1.1
 

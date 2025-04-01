@@ -29,5 +29,9 @@
         "**/node_modules": true,
         "**/*.js.map": true,
         "**/*.npmrc": true
-    }
+    },
+    "git.autofetch": true,
+    "git.autofetchPeriod": 60,
+    "git.enableSmartCommit": true,
+    "editor.mouseWheelZoom": true,
 }
