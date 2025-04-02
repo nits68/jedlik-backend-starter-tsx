@@ -234,23 +234,23 @@ export default class myController implements IController {
     private getGroupByExample = async (req: Request, res: Response) => {
         try {
             const result = await manySideModel.aggregate([
-                // Összekapcsolás (JOIN)
+                // Összekapcsolás (FROM - JOIN)
                 {
                     $lookup: {
                         from: "TáblaNeveOne", // Az 1-oldali kollekció neve
                         localField: "FK_neve", // Az N-oldali kollekció kapcsolatot tartó mezője
                         foreignField: "_id", // Az 1-oldali kollekció kapcsolatot tartó mezője
-                        as: "oneSideData", // Az új mező álneve
+                        as: "oneSideData", // Az új mező neve (álneve)
                     },
                 },
                 {
-                    $unwind: "$oneSideData", // oneSideData új mező "laposítása"
+                    $unwind: "$oneSideData", // oneSideData új mező "laposítása" (az egy elemű tömbből "kiveszi" az objektumot)
                 },
                 // Szűrés a csoportosítás előtt (WHERE)
                 {
                     $match: {
                         $and: [
-                            { "oneSideData.field1": /alue/i }, // Szűrés a field1 mező alapján (itt regex mintával)
+                            { "oneSideData.field1": /alue/i }, // Szűrés a field1 mező alapján (itt regex mintával, https://regex101.com/)
                             { prepTime: { $gte: 10 } }, // Elkészítési idő >= 10
                         ],
                     },
@@ -258,21 +258,21 @@ export default class myController implements IController {
                 // Csoportosítás (GROUP BY)
                 {
                     $group: {
-                        _id: "$oneSideData.field1", // Csoportosítás a field1 mező azonos értékei alapján
-                        avgPrepTime: { $avg: "$prepTime" }, // Átlagos elkészítési idő
-                        totalRecipes: { $sum: 1 }, // Receptek száma
+                        _id: "$oneSideData.field1", // Csoportok létrehozása a field1 mező azonos értékei alapján történik
+                        avgPrepTime: { $avg: "$prepTime" }, // Átlagos elkészítési idő - AVG()
+                        totalRecipes: { $sum: 1 }, // Receptek száma - COUNT()
                     },
                 },
                 // Szűrés a csoportosítás után (HAVING)
                 {
                     $match: {
-                        avgPrepTime: { $gte: 10 }, // Csak azok a csoportok, ahol az átlagos elkészítési idő >= 50
+                        avgPrepTime: { $gte: 10 }, // Csak azok a csoportok, ahol az átlagos elkészítési idő >= 10
                     },
                 },
                 // Rendezés (ORDER BY)
                 {
                     $sort: {
-                        avgPrepTime: 1, // Csökkenő sorrend az átlagos elkészítési idő szerint
+                        avgPrepTime: 1, // Növekvő sorrend az átlagos elkészítési idő szerint (-1 esetén csökkenő sorrend)
                     },
                 },
                 // Limitálás (LIMIT)
@@ -282,9 +282,9 @@ export default class myController implements IController {
                 // Kiválasztás (SELECT, projekció)
                 {
                     $project: {
-                        _id: 0, // Ne adja vissza az _id mezőt
-                        field1Custom: "$_id", // Az új mező neve az _id helyett "field1Custom"
-                        avgPrepTime: 1, // Átlagos elkészítési idő
+                        _id: 0, // Ne adja vissza az _id mezőt (mező átnevezése 1.)
+                        field1Custom: "$_id", // Az új mező neve az _id helyett "field1Custom" (mező átnevezése 2.)
+                        avgPrepTime: 1, // Átlagos elkészítési idő (1: megjelenítés, 0: elrejtés)
                         totalRecipes: 1, // Receptek száma
                     },
                 },
